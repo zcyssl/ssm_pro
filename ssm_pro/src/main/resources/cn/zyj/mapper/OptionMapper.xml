@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zyj.mapper.OptionMapper">
+
+
+    <resultMap id="option" type="OptionInfo">
+
+        <result column="id" property="id"/>
+        <result column="question_num_id" property="questionNumId"/>
+        <result column="option_content" property="optionContent"/>
+        <result column="option_type" property="optionType"/>
+
+        <association property="paperInfo" javaType="paperInfo">
+            <result property="questionContent" column="question_content"/>
+        </association>
+    </resultMap>
+
+    <insert id="addOption">
+        insert into option_info(id,question_num_id,option_content,option_type,create_time,creator) values (null,#{questionNumId},#{optionContent},#{optionType},#{createTime},#{creator});
+    </insert>
+
+    <select id="selectIdType" resultMap="option">
+
+       SELECT * FROM option_info WHERE option_type = #{optionType} AND question_num_id = #{questionNumId};
+
+
+    </select>
+    <select id="findAll" resultMap="option">
+        select oi.id,question_num_id,option_type,option_content,question_content from option_info oi,paper_info pi where oi.question_num_id=pi.question_num
+
+    </select>
+    <select id="selectById" resultMap="option">
+        select * from option_info where id=#{id};
+    </select>
+
+
+    <update id="update" parameterType="optionInfo">
+
+        update option_info set question_num_id = #{questionNumId},option_type = #{optionType},option_content = #{optionContent} where id = #{id};
+
+    </update>
+
+
+
+
+
+
+
+
+
+</mapper>
